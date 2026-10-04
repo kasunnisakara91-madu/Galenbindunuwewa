@@ -1,0 +1,6 @@
+{
+  "name": "A/Galenbindunuwewa Central College — Official Portal",
+  "description": "Official school management portal and academic platform for Grades 6–13 at A/Galenbindunuwewa Central College, Galenbindunuwewa, Sri Lanka.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
