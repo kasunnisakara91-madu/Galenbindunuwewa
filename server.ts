@@ -16,20 +16,13 @@ const __dirname = path.dirname(__filename);
 
 async function startServer() {
   try {
-    // Initialize MongoDB / Database
     await initializeDatabase();
 
     const app = express();
-
-    // Hosting platforms provide PORT automatically
     const PORT = Number(process.env.PORT) || 3000;
 
-    // Trust reverse proxy
     app.set('trust proxy', 1);
 
-    // ==============================
-    // SECURITY
-    // ==============================
     app.use(
       helmet({
         contentSecurityPolicy: false,
@@ -38,9 +31,6 @@ async function startServer() {
       })
     );
 
-    // ==============================
-    // CORS
-    // ==============================
     app.use(
       cors({
         origin: true,
@@ -48,9 +38,6 @@ async function startServer() {
       })
     );
 
-    // ==============================
-    // BODY PARSER
-    // ==============================
     app.use(cookieParser());
 
     app.use(
@@ -66,9 +53,6 @@ async function startServer() {
       })
     );
 
-    // ==============================
-    // API RATE LIMIT
-    // ==============================
     const apiLimiter = rateLimit({
       windowMs: 15 * 60 * 1000,
       max: 600,
@@ -82,12 +66,7 @@ async function startServer() {
 
     app.use('/api', apiLimiter, apiRouter);
 
-    // ==============================
-    // DEVELOPMENT / PRODUCTION
-    // ==============================
-
     if (process.env.NODE_ENV !== 'production') {
-      // Vite development server
       const vite = await createViteServer({
         server: {
           middlewareMode: true,
@@ -97,7 +76,6 @@ async function startServer() {
 
       app.use(vite.middlewares);
     } else {
-      // Production frontend
       const distPath = path.resolve(__dirname, 'dist');
 
       app.use(express.static(distPath));
@@ -106,10 +84,6 @@ async function startServer() {
         res.sendFile(path.join(distPath, 'index.html'));
       });
     }
-
-    // ==============================
-    // START SERVER
-    // ==============================
 
     app.listen(PORT, '0.0.0.0', () => {
       console.log(
