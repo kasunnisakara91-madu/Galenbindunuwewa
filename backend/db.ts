@@ -19,7 +19,7 @@ import {
   GalleryModel,
   StudyMaterialModel,
   SchoolSettingsModel,
-} from './models/schemas.js';
+} from './models/schemas.ts';
 
 export type CollectionName =
   | 'admins'
